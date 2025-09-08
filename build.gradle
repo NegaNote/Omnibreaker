@@ -3,6 +3,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev.legacyforge' version '2.0.91'
+    id 'com.diffplug.spotless' version '7.0.2'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -19,11 +20,21 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+    mavenCentral()
+    maven { // Registrate
+        url = "https://maven.tterrag.com/"
+        content {
+            // need to be specific here due to version overlaps
+            includeGroup("com.tterrag.registrate")
+        }
+    }
 }
 
 base {
     archivesName = mod_id
 }
+
+apply from: "$rootDir/gradle/scripts/spotless.gradle"
 
 // Mojang ships Java 17 to end users in 1.20.1, so mods should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -116,30 +127,13 @@ obfuscation {
 }
 
 dependencies {
-    // If you wish to declare dependencies against mods, make sure to use the 'mod*' configurations so that they're remapped.
-	// See https://github.com/neoforged/ModDevGradle/blob/main/LEGACY.md#remapping-mod-dependencies for more information.
-	
-    // Example optional mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // modCompileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // modCompileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    // modLocalRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    compileOnly("org.jetbrains:annotations:26.0.1")
 
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // modImplementation "blank:coolmod-${mc_version}:${coolmod_version}"
+    modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    // Example mod dependency using a file as dependency
-    // modImplementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-
-    // Example project dependency using a sister or child project:
-    // modImplementation project(":myproject")
-
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 // Uncomment the lines below if you wish to configure mixin. The mixin file should be named modid.mixins.json.
