@@ -1,5 +1,8 @@
 {
   "item.omnibreaker.omnibreaker": "Omnibreaker",
   "itemGroup.omnibreaker.creative_tab": "Omni-breaker",
-  "itemGroup.omnibreaker.omnibreaker": "Omnibreaker"
+  "itemGroup.omnibreaker.omnibreaker": "Omnibreaker",
+  "tooltip.omnibreaker.can_break_anything": "The Omni-breaker can insta-mine ANYTHING!",
+  "tooltip.omnibreaker.energy": "%d/%d FE",
+  "tooltip.omnibreaker.right_click_function": "Break individual blocks with right-click!"
 }

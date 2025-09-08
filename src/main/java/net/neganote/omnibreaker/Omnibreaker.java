@@ -1,8 +1,10 @@
 package net.neganote.omnibreaker;
 
 import net.neganote.omnibreaker.common.OmniItems;
+import net.neganote.omnibreaker.datagen.OmniDatagen;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -23,8 +25,11 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import org.slf4j.Logger;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Omnibreaker.MOD_ID)
+@ParametersAreNonnullByDefault
 public class Omnibreaker {
 
     // Define mod id in a common place for everything to reference
@@ -39,6 +44,12 @@ public class Omnibreaker {
             builder -> builder
                     .title(REGISTRATE.addLang("itemGroup", Omnibreaker.id("creative_tab"), "Omni-breaker"))
                     .icon(() -> new ItemStack(OmniItems.OMNIBREAKER.get()))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        var tab = REGISTRATE.get("omnibreaker", Registries.CREATIVE_MODE_TAB);
+                        ItemStack fullOmnibreaker = new ItemStack(OmniItems.OMNIBREAKER.get());
+                        fullOmnibreaker.getOrCreateTag().putInt("energy", Config.CAPACITY.get());
+                        output.accept(fullOmnibreaker);
+                    })
                     .build())
             .register();
 
@@ -47,6 +58,7 @@ public class Omnibreaker {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         OmniItems.init();
+        OmniDatagen.init();
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -55,7 +67,7 @@ public class Omnibreaker {
         MinecraftForge.EVENT_BUS.register(this);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC, "omnibreaker.toml");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

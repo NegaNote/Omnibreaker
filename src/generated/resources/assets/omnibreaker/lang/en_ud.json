@@ -1,5 +1,8 @@
 {
   "item.omnibreaker.omnibreaker": "ɹǝʞɐǝɹqıuɯO",
   "itemGroup.omnibreaker.creative_tab": "ɹǝʞɐǝɹq-ıuɯO",
-  "itemGroup.omnibreaker.omnibreaker": "ɹǝʞɐǝɹqıuɯO"
+  "itemGroup.omnibreaker.omnibreaker": "ɹǝʞɐǝɹqıuɯO",
+  "tooltip.omnibreaker.can_break_anything": "¡⅁NIH⟘ʎNⱯ ǝuıɯ-ɐʇsuı uɐɔ ɹǝʞɐǝɹq-ıuɯO ǝɥ⟘",
+  "tooltip.omnibreaker.energy": "ƎℲ %d/%d",
+  "tooltip.omnibreaker.right_click_function": "¡ʞɔıןɔ-ʇɥbıɹ ɥʇıʍ sʞɔoןq ןɐnpıʌıpuı ʞɐǝɹᗺ"
 }

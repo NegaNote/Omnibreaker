@@ -1,5 +1,5 @@
 
-Installation information
+The Omni-breaker
 =======
 
 This template repository can be directly cloned to get you started with a new
