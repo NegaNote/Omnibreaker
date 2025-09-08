@@ -1,3 +1,3 @@
-# Omni-breaker version 1.0.0
+# Omni-breaker version 1.0.1
 
-* Initial release
+* HOTFIX to include registrate lib
