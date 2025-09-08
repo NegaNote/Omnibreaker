@@ -36,6 +36,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import static net.minecraft.world.level.block.Block.getDrops;
 import static net.neganote.omnibreaker.Config.ENERGY_PER_USE;
+import static net.neganote.omnibreaker.Config.USE_FORGE_ENERGY;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -50,7 +51,7 @@ public class OmniBreakerItem extends Item {
         IEnergyStorage storage = getEnergyStorage(stack);
         assert storage != null;
 
-        return storage.getEnergyStored() >= ENERGY_PER_USE.get();
+        return storage.getEnergyStored() >= ENERGY_PER_USE.get() || !USE_FORGE_ENERGY.get();
     }
 
     @Override
@@ -58,7 +59,7 @@ public class OmniBreakerItem extends Item {
         IEnergyStorage storage = getEnergyStorage(stack);
         assert storage != null;
 
-        return storage.getEnergyStored() >= ENERGY_PER_USE.get() ? 100_000f : 0f;
+        return storage.getEnergyStored() >= ENERGY_PER_USE.get() || !USE_FORGE_ENERGY.get() ? 100_000f : 0f;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class OmniBreakerItem extends Item {
         double chance = 1.0f / (unbreaking + 1);
         double rand = Math.random();
 
-        if (rand <= chance) {
+        if (rand <= chance && USE_FORGE_ENERGY.get()) {
             storage.extractEnergy(ENERGY_PER_USE.get(), false);
         }
 
@@ -99,7 +100,7 @@ public class OmniBreakerItem extends Item {
         IEnergyStorage storage = getEnergyStorage(itemStack);
         assert storage != null;
 
-        if (storage.getEnergyStored() < ENERGY_PER_USE.get()) {
+        if (storage.getEnergyStored() < ENERGY_PER_USE.get() && USE_FORGE_ENERGY.get()) {
             return InteractionResult.PASS;
         }
 
@@ -115,7 +116,7 @@ public class OmniBreakerItem extends Item {
                 var entity = new ItemEntity(level, center.x(), center.y(), center.z(), drop);
                 level.addFreshEntity(entity);
             }
-            if (rand <= chance) {
+            if (rand <= chance && USE_FORGE_ENERGY.get()) {
                 storage.extractEnergy(ENERGY_PER_USE.get(), false);
             }
         }
@@ -146,13 +147,15 @@ public class OmniBreakerItem extends Item {
 
         tooltipComponents.add(Component.translatable("tooltip.omnibreaker.can_break_anything"));
         tooltipComponents.add(Component.translatable("tooltip.omnibreaker.right_click_function"));
-        tooltipComponents.add(Component.translatable("tooltip.omnibreaker.energy", storage.getEnergyStored(),
-                storage.getMaxEnergyStored()).withStyle(ChatFormatting.AQUA));
+        if (USE_FORGE_ENERGY.get()) {
+            tooltipComponents.add(Component.translatable("tooltip.omnibreaker.energy", storage.getEnergyStored(),
+                    storage.getMaxEnergyStored()).withStyle(ChatFormatting.AQUA));
+        }
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return true;
+        return USE_FORGE_ENERGY.get();
     }
 
     @Override

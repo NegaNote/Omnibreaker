@@ -156,7 +156,7 @@ dependencies {
     modImplementation("curse.maven:jade-324717:5390389")
 
     // EnderIO, here purely for testing
-    modRuntimeOnly("curse.maven:ender-io-64578:6938370")
+    modLocalRuntime("curse.maven:ender-io-64578:6938370")
 
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'

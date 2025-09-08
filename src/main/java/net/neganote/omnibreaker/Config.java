@@ -10,13 +10,18 @@ public class Config {
 
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
+    public static final ForgeConfigSpec.BooleanValue USE_FORGE_ENERGY = BUILDER
+            .comment("Whether the Omni-breaker needs forge energy to be used.",
+                    "(Will make the other configs do nothing.)")
+            .define("use_forge_energy", true);
+
     public static final ForgeConfigSpec.IntValue CAPACITY = BUILDER
             .comment("Amount of FE the Omni-breaker can store.")
             .defineInRange("capacity", 50_000_000, 0, Integer.MAX_VALUE);
 
     public static final ForgeConfigSpec.IntValue ENERGY_PER_USE = BUILDER
             .comment("Amount of FE used every time the Omni-breaker breaks a block.")
-            .defineInRange("energyPerUse", 10_000, 0, Integer.MAX_VALUE);
+            .defineInRange("energy_per_use", 10_000, 0, Integer.MAX_VALUE);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 }
