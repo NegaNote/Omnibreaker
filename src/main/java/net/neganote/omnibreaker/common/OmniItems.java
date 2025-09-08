@@ -14,7 +14,7 @@ public class OmniItems {
             .properties(p -> p.stacksTo(1).durability(0).rarity(Rarity.RARE))
             .model((ctx, prov) -> prov.handheld(ctx)
                     .texture("layer0", Omnibreaker.id("item/omnibreaker")))
-
+            .lang("Omni-breaker")
             .register();
 
     public static void init() {}
