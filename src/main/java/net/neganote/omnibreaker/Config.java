@@ -12,7 +12,11 @@ public class Config {
 
     public static final ForgeConfigSpec.IntValue CAPACITY = BUILDER
             .comment("Amount of FE the Omni-breaker can store.")
-            .defineInRange("capacity", 4_000_000, 0, Integer.MAX_VALUE);
+            .defineInRange("capacity", 5_000_000, 0, Integer.MAX_VALUE);
+
+    public static final ForgeConfigSpec.IntValue ENERGY_PER_USE = BUILDER
+            .comment("Amount of FE used every time the Omni-breaker breaks a block.")
+            .defineInRange("energyPerUse", 1000, 0, Integer.MAX_VALUE);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 }

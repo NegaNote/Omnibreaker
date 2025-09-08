@@ -28,6 +28,23 @@ repositories {
             includeGroup("com.tterrag.registrate")
         }
     }
+    maven {
+        // Patchouli, JEI
+        name = "BlameJared"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // EMI
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        // Curse Forge File
+        url "https://cursemaven.com/"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 base {
@@ -130,6 +147,13 @@ dependencies {
     compileOnly("org.jetbrains:annotations:26.0.1")
 
     modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    // JEI, EMI, Jade
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    modRuntimeOnly("dev.emi:emi-forge:${emi_version}+${minecraft_version}")
+    modImplementation("curse.maven:jade-324717:5390389")
 
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
