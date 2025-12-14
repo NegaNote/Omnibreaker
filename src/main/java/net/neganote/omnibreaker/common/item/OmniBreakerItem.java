@@ -7,9 +7,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -20,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -31,7 +32,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -63,17 +63,12 @@ public class OmniBreakerItem extends Item {
         return storage.getEnergyStored() >= ENERGY_PER_USE.get() || !USE_ENERGY.get() ? 100_000f : 0f;
     }
 
-    private int getUnbreaking(ItemStack stack) {
-        var enchantments = stack.getComponents().get(DataComponents.ENCHANTMENTS);
-
-        if (enchantments != null) {
-            for (Map.Entry<Holder<Enchantment>, Integer> entry : enchantments.entrySet()) {
-                if (entry.getKey().is(Enchantments.UNBREAKING)) {
-                    return entry.getValue();
-                }
-            }
-        }
-        return 0;
+    private int getEnchantLevel(ItemStack stack, Level level, ResourceKey<Enchantment> enchantment) {
+        return level.registryAccess()
+                .registryOrThrow(Registries.ENCHANTMENT)
+                .getHolder(enchantment)
+                .map(holder -> EnchantmentHelper.getTagEnchantmentLevel(holder, stack))
+                .orElse(0);
     }
 
     @Override
@@ -81,7 +76,7 @@ public class OmniBreakerItem extends Item {
         IEnergyStorage storage = getEnergyStorage(stack);
         assert storage != null;
 
-        var unbreaking = getUnbreaking(stack);
+        var unbreaking = getEnchantLevel(stack, level, Enchantments.UNBREAKING);
 
         double chance = 1.0f / (unbreaking + 1);
         double rand = Math.random();
@@ -91,11 +86,6 @@ public class OmniBreakerItem extends Item {
         }
 
         return true;
-    }
-
-    @Override
-    public ItemEnchantments getAllEnchantments(ItemStack stack, HolderLookup.RegistryLookup<Enchantment> lookup) {
-        return super.getAllEnchantments(stack, lookup);
     }
 
     @Override
@@ -113,7 +103,7 @@ public class OmniBreakerItem extends Item {
             return InteractionResult.PASS;
         }
 
-        int unbreaking = getUnbreaking(context.getItemInHand());
+        int unbreaking = getEnchantLevel(context.getItemInHand(), level, Enchantments.UNBREAKING);
         double chance = 1.0 / (unbreaking + 1);
         double rand = Math.random();
 
