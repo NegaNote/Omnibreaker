@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 21
 
       - name: Setup Gradle Caches
         uses: actions/cache@v3
@@ -68,5 +68,5 @@ jobs:
           version: ${{ steps.gradle_properties.outputs.mod_version }}
           version-type: ${{ inputs.version_type }}
           changelog-file: changelog.md
-          loaders: forge
-          game-versions: 1.20.1
+          loaders: neoforge
+          game-versions: 1.21.1
