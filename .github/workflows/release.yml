@@ -61,10 +61,10 @@ jobs:
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-generate-changelog: true
-          github-tag: "1.20.1-${{ steps.gradle_properties.outputs.mod_version }}"
+          github-tag: "1.21.1-${{ steps.gradle_properties.outputs.mod_version }}"
 
           files: ./build/libs/!(*-@(dev|sources|dev-slim)).jar
-          name: "Omni-breaker ${{ steps.gradle_properties.outputs.mod_version }}"
+          name: "Omni-breaker ${{ steps.gradle_properties.outputs.mod_version }} for NeoForge"
           version: ${{ steps.gradle_properties.outputs.mod_version }}
           version-type: ${{ inputs.version_type }}
           changelog-file: changelog.md
