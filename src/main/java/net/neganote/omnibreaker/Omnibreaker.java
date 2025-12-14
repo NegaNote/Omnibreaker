@@ -45,10 +45,13 @@ public class Omnibreaker {
                     .title(REGISTRATE.addLang("itemGroup", Omnibreaker.id("creative_tab"), "Omni-breaker"))
                     .icon(() -> new ItemStack(OmniItems.OMNIBREAKER.get()))
                     .displayItems((itemDisplayParameters, output) -> {
-                        var tab = REGISTRATE.get("omnibreaker", Registries.CREATIVE_MODE_TAB);
-                        ItemStack fullOmnibreaker = new ItemStack(OmniItems.OMNIBREAKER.get());
-                        fullOmnibreaker.getOrCreateTag().putInt("energy", Config.CAPACITY.get());
-                        output.accept(fullOmnibreaker);
+                        if (Config.USE_FORGE_ENERGY.get()) {
+                            var tab = REGISTRATE.get("omnibreaker", Registries.CREATIVE_MODE_TAB);
+                            ItemStack fullOmnibreaker = new ItemStack(OmniItems.OMNIBREAKER.get());
+                            fullOmnibreaker.getOrCreateTag().putInt("energy", Config.CAPACITY.get());
+                            output.accept(fullOmnibreaker);
+                        }
+
                     })
                     .build())
             .register();
