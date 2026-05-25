@@ -195,26 +195,24 @@ public class OmniBreakerItem extends Item {
         public int receiveEnergy(int amount, boolean simulated) {
             int stored = getEnergyStored();
             int received = Math.min(amount, CAPACITY - stored);
-            int ret = amount - received;
 
             if (!simulated) {
                 stack.getOrCreateTag().putInt(ENERGY_TAG, stored + received);
             }
 
-            return ret;
+            return received;
         }
 
         @Override
         public int extractEnergy(int amount, boolean simulated) {
             int stored = getEnergyStored();
             int extracted = Math.min(amount, stored);
-            int ret = amount - extracted;
 
             if (!simulated) {
                 stack.getOrCreateTag().putInt(ENERGY_TAG, stored - extracted);
             }
 
-            return ret;
+            return extracted;
         }
 
         @Override
