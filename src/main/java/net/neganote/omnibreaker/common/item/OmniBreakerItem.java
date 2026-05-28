@@ -105,10 +105,10 @@ public class OmniBreakerItem extends Item {
         }
 
         if (!level.isClientSide()) {
-            List<ItemStack> drops = new ObjectArrayList<>(
-                    getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos)));
             var player = context.getPlayer();
             assert player != null;
+            List<ItemStack> drops = new ObjectArrayList<>(
+                    getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos), player, itemStack));
             level.destroyBlock(pos, false);
             drops.removeIf(player::addItem);
             for (var drop : drops) {
@@ -131,7 +131,7 @@ public class OmniBreakerItem extends Item {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment == Enchantments.UNBREAKING;
+        return enchantment == Enchantments.UNBREAKING || enchantment == Enchantments.SILK_TOUCH;
     }
 
     @Override
