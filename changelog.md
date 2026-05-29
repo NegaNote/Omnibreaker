@@ -1,3 +1,4 @@
-# Omni-breaker version 1.0.1
+# Omni-breaker version 1.0.2
 
-* HOTFIX to include registrate lib
+* fix charging and thus draining FE when the omnibreaker is already fully charged
+* allow silk touch

@@ -158,6 +158,9 @@ dependencies {
     // EnderIO, here purely for testing
     modLocalRuntime("curse.maven:ender-io-64578:6938370")
 
+    // Flux Networks, here for testing
+    modLocalRuntime("curse.maven:flux-networks-248020:5234697")
+
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
